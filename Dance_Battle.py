@@ -149,6 +149,7 @@ class DFS:
 def move_list(n):
     '''returns a 2d list of boolean True'''
 
+    # this is going to be be my initial list where all moves are game
     moves = [[True for x in range(0,n)] for x in range(0,n)]
 
     return moves
@@ -179,3 +180,51 @@ def move_list(n):
 ##        i[j] = True
 ##    print(i)
 
+def My_Game_Data(difficulty):
+    '''helper function to clean up dance battle
+       returns a list'''
+
+    # Get my lines out of the in file
+    MyGame = open(difficulty, 'r')
+    ready_game = MyGame.readlines()
+    MyGame.close()
+    ready_game = [ready_game[x].rstrip('\n')
+                  for x in range(len(ready_game))]
+
+    return ready_game
+
+def Dance_Battle(difficulty):
+    '''start a dance battle with a number of moves already played
+       from a file that will be passed to this function'''
+
+    # get my game data
+    game_data = My_Game_Data(difficulty)
+
+    # it works
+    print(game_data)
+
+    turn_count = 0
+
+    # pull the data out of the in file
+
+    # set moves as an int cast of the 0th index
+    moves_open = move_list(int(game_data[0]))
+    print(moves_open)
+
+
+    # sets up turns to be counted and moves populated
+    turn_count = int(game_data[1])
+    print(turn_count)
+
+    game_data.pop(0)
+    game_data.pop(0)
+    print(game_data)
+    
+
+EASY   = "testcaseEasy.txt"
+MEDIUM = "testcaseMed.txt"
+HARD   = "testcaseHard.txt"
+
+Dance_Battle(EASY)
+Dance_Battle(MEDIUM)
+Dance_Battle(HARD)
