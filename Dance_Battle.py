@@ -75,14 +75,13 @@ class Problem:
         this is the real meat of defining the child nodes
         this will return a list of the child Nodes to result'''
 
-        # So here is where 0 is in the state
-        # do I just want to make 9 cases? (all 9 positions)
+        
         # Notice I am only going to read state, never alter state
         # 99% of the work is done inside this method
         z = state
         child_actions = []
             
-            return child_actions
+        return child_actions
 
     def action_result(self, action):
         '''returns an action from self.actions(state)'''
@@ -145,3 +144,38 @@ class DFS:
         '''represent the self.q object in string form'''
         # print() will call on this overloaded method
         return 'Queue is: {}'.format(self.q)
+
+
+def move_list(n):
+    '''returns a 2d list of boolean True'''
+
+    moves = [[True for x in range(0,n)] for x in range(0,n)]
+
+    return moves
+
+### testing moves (the above method works)
+##for i in move_list(0):
+##    print(i)
+##
+##for i in move_list(3):
+##    print(i)
+##
+##for i in move_list(5):
+##    print(i)
+##
+##for i in move_list(10):
+##    print(i)
+##
+### Testing that all True's can be flipped to false and back
+##test2 = move_list(10)
+##for i in test2:
+##    print(i)
+##    
+##    for j in range(len(i)):
+##        i[j] = False
+##    print(i)
+##    
+##    for j in range(len(i)):
+##        i[j] = True
+##    print(i)
+
