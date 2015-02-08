@@ -61,7 +61,7 @@ class Node:
         '''return the state in the node'''
         return "Node {}".format(self.state)
 
-class Problem:
+class Game:
 
     def __init__(self, initial = None, goal = None):
         '''stating state and remember to pass goal to problem'''
