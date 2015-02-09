@@ -93,8 +93,8 @@ class Game:
 
     def goal_test(self, state):
         '''returns boolean of if state == goal'''
-
-        return state == str(self.goal)
+        print(self.goal)
+        return state == self.goal
 
     def path_cost(self, cost):
         '''defines current path cost'''
@@ -159,7 +159,6 @@ def move_list(n):
 
     # this is going to be be my initial list where all moves are game
     moves = [[True for x in range(0,n)] for x in range(0,n)]
-
     return moves
 
 
@@ -177,14 +176,14 @@ def My_Game_Data(difficulty):
     return ready_game
 
 
-def make_goal(Start):
+def make_goal(this_state):
     '''just set every tile to false and return it as the goal state'''
-
-    for i in Start:    
+  
+    for i in this_state:    
         for j in range(len(i)):
             i[j] = False
 
-    return Start
+    return this_state
     
 
 def Dance_Battle(difficulty):
@@ -197,7 +196,7 @@ def Dance_Battle(difficulty):
     turn_count = 0
 
     # pull the data out of the in file
-    # set moves as an int cast of the 0th index
+    # set moves from an int cast of the 0th index
     moves_open = move_list(int(game_data[0]))
 
     # sets up turns to be counted and moves populated
@@ -215,7 +214,10 @@ def Dance_Battle(difficulty):
 
     # Set up search queue & initial states
     MinMax = DFS()
-    theGame = Game(moves_open, make_goal(moves_open))
+    check = moves_open[:]
+    print(check)
+    print(moves_open)
+    theGame = Game(check, make_goal(check))
     begin = True
     
     # set up intitial game state by spending out the given turns
@@ -229,8 +231,7 @@ def Dance_Battle(difficulty):
         moves = game_data.pop(0)
         first_move  = int(moves[:1])
         second_move = int(moves[1:])
-        print(first_move)
-        print(second_move)
+
         moves_open[first_move][second_move] = False
         
         if begin == True:
@@ -250,7 +251,8 @@ def Dance_Battle(difficulty):
 
     # now to start the game
     print(moves_open)
-    while Game.goal_test(str(moves_open)) != True:
+    print("I'm about to fail")
+    while Game.goal_test(moves_open) != True:
         break
     
 EASY   = "testcaseEasy.txt"
