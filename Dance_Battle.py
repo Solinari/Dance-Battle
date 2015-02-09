@@ -14,7 +14,7 @@ class Node:
         self.path_cost = path_cost
         self.depth = depth
 
-    def child_node(self, parent, action, state):
+    def child_node(self, parent, state, action=None):
         '''pass a problem object to store in the child '''
 
         #return cost - this is kind of like abstract method tucking
@@ -127,6 +127,14 @@ class DFS:
         else:
             return self.q.pop()
 
+    def peek(self):
+        '''use this as a helper method to peek at the top'''
+        if self.isEmpty == True:
+            return 'Queue is empty'
+
+        else:
+            return self.q[-1]
+
     def __eq__(self, other):
         '''checks if self.q == other.q'''
         return self.q == other.q
@@ -154,19 +162,6 @@ def move_list(n):
 
     return moves
 
-### testing moves (the above method works)
-##for i in move_list(0):
-##    print(i)
-##
-##for i in move_list(3):
-##    print(i)
-##
-##for i in move_list(5):
-##    print(i)
-##
-##for i in move_list(10):
-##    print(i)
-##
 ### Testing that all True's can be flipped to false and back
 ##test2 = move_list(10)
 ##for i in test2:
@@ -200,28 +195,62 @@ def Dance_Battle(difficulty):
     # get my game data
     game_data = My_Game_Data(difficulty)
 
-    # it works
-    print(game_data)
-
     turn_count = 0
 
     # pull the data out of the in file
-
     # set moves as an int cast of the 0th index
     moves_open = move_list(int(game_data[0]))
-    print(moves_open)
-
 
     # sets up turns to be counted and moves populated
     turn_count = int(game_data[1])
-    print(turn_count)
 
-    # don't need this for the loop now
+    # Max or min
+    Max_or_min = ["Max", "Min"]
+
+    # don't need this anymore
     game_data.pop(0)
     game_data.pop(0)
-    print(game_data)
+
+    # remember saved states
+    states = {}
+
+    # Set up search queue & initial states
+    MinMax = DFS()
+    begin = True
     
+    # set up intitial game state by spending out the given turns
+    # we can still MiniMax these later using dfs..
+    # use Node.depth() % 2 == 0 to see if max
+    # and Node.depth() % 2 != 0 to see if min
+    while turn_count > 0:
 
+        # bookkeeping
+        turn_count -= 1
+        moves = game_data.pop(0)
+        first_move  = int(moves[:1])
+        second_move = int(moves[1:])
+        
+        moves_open[first_move][second_move] = False
+        
+        if begin == True:
+            # 1st move: Max
+            Root = Node(moves_open)
+            MinMax.enqueue(Root)
+            states[str(Root.state)] = Root.path_cost
+            begin = False
+            print("boop")
+            continue
+
+        # future moves will be Min..then Max based on depth we check later
+        # I don't know if I'm suppose to check their states and append here
+        # on the minimax...instructions are vague about this
+        frontier = MinMax.peek()
+        states[str(frontier.state)] = frontier.path_cost
+        MinMax.enqueue(frontier.child_node(frontier, moves_open))
+        print("zoop")
+
+    print(MinMax.peek())
+    
 EASY   = "testcaseEasy.txt"
 MEDIUM = "testcaseMed.txt"
 HARD   = "testcaseHard.txt"
