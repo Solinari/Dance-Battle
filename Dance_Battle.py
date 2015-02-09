@@ -216,6 +216,7 @@ def Dance_Battle(difficulty):
     turn_count = int(game_data[1])
     print(turn_count)
 
+    # don't need this for the loop now
     game_data.pop(0)
     game_data.pop(0)
     print(game_data)
