@@ -198,18 +198,14 @@ def Dance_Battle(difficulty):
     game_data = My_Game_Data(difficulty)
 
     turn_count = 0
-
+    list_len = int(game_data[0]) - 1
+    print(list_len)
     # pull the data out of the in file
     # set moves from an int cast of the 0th index
     moves_open = move_list(int(game_data[0]))
 
     # sets up turns to be counted and moves populated
     turn_count = int(game_data[1])
-
-    # Max or min
-    Max_or_min = ["Max", "Min"]
-
-
 
     # remember saved states
     states = {}
@@ -225,10 +221,7 @@ def Dance_Battle(difficulty):
     # don't need this anymore
     game_data.pop(0)
     game_data.pop(0)
-    # set up intitial game state by spending out the given turns
-    # we can still MiniMax these later using dfs..
-    # use Node.depth() % 2 == 0 to see if max level
-    # and Node.depth() % 2 != 0 to see if min level
+
     while turn_count > 0:
 
         # bookkeeping
@@ -256,8 +249,38 @@ def Dance_Battle(difficulty):
         MinMax.enqueue(frontier.child_node(frontier, curr_state))
 
     # now to start the game
+    Max = True
+    while curr_state != Game.return_goal:
+        
+        curr_node = MinMax.dequeue()
+        
+        states[str(curr_node.state)] = curr_node.path_cost
 
-    while moves_open2 != Game.return_goal:
+        if curr_node.state == Game.return_goal:
+
+            return curr_node.state
+
+        
+        # Check if Max
+        # take a player input
+        if Max:
+            print("beep")
+            inp = str(input("Enter two digits 0 through 9\nEnter them: a b\nThen press enter\n"))
+            first_move  = int(inp[:1])
+            second_move = int(inp[1:])
+            print(first_move)
+            print(second_move)
+
+            while first_move > list_len and second_move > list_len:
+                inp = str(input("Enter two digits 0 through 9\nEnter them: a b\nThen press enter\n"))
+
+            curr_state[first_move][second_move] = False
+            Max = False
+        #Check  if Min
+        if not Max:
+            print("boop")
+            Max = True
+            continue
         
         
         
