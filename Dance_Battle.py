@@ -162,18 +162,6 @@ def move_list(n):
 
     return moves
 
-### Testing that all True's can be flipped to false and back
-##test2 = move_list(10)
-##for i in test2:
-##    print(i)
-##    
-##    for j in range(len(i)):
-##        i[j] = False
-##    print(i)
-##    
-##    for j in range(len(i)):
-##        i[j] = True
-##    print(i)
 
 def My_Game_Data(difficulty):
     '''helper function to clean up dance battle
@@ -187,6 +175,17 @@ def My_Game_Data(difficulty):
                   for x in range(len(ready_game))]
 
     return ready_game
+
+
+def make_goal(Start):
+    '''just set every tile to false and return it as the goal state'''
+
+    for i in Start:    
+        for j in range(len(i)):
+            i[j] = False
+
+    return Start
+    
 
 def Dance_Battle(difficulty):
     '''start a dance battle with a number of moves already played
@@ -216,12 +215,13 @@ def Dance_Battle(difficulty):
 
     # Set up search queue & initial states
     MinMax = DFS()
+    theGame = Game(moves_open, make_goal(moves_open))
     begin = True
     
     # set up intitial game state by spending out the given turns
     # we can still MiniMax these later using dfs..
-    # use Node.depth() % 2 == 0 to see if max
-    # and Node.depth() % 2 != 0 to see if min
+    # use Node.depth() % 2 == 0 to see if max level
+    # and Node.depth() % 2 != 0 to see if min level
     while turn_count > 0:
 
         # bookkeeping
@@ -238,7 +238,6 @@ def Dance_Battle(difficulty):
             MinMax.enqueue(Root)
             states[str(Root.state)] = Root.path_cost
             begin = False
-            print("boop")
             continue
 
         # future moves will be Min..then Max based on depth we check later
@@ -247,9 +246,9 @@ def Dance_Battle(difficulty):
         frontier = MinMax.peek()
         states[str(frontier.state)] = frontier.path_cost
         MinMax.enqueue(frontier.child_node(frontier, moves_open))
-        print("zoop")
 
-    print(MinMax.peek())
+    # now to start the game
+    
     
 EASY   = "testcaseEasy.txt"
 MEDIUM = "testcaseMed.txt"
