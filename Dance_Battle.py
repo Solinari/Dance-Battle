@@ -94,7 +94,7 @@ class Game:
     def goal_test(self, state):
         '''returns boolean of if state == goal'''
 
-        return state == self.goal
+        return state == str(self.goal)
 
     def path_cost(self, cost):
         '''defines current path cost'''
@@ -229,7 +229,8 @@ def Dance_Battle(difficulty):
         moves = game_data.pop(0)
         first_move  = int(moves[:1])
         second_move = int(moves[1:])
-        
+        print(first_move)
+        print(second_move)
         moves_open[first_move][second_move] = False
         
         if begin == True:
@@ -248,7 +249,9 @@ def Dance_Battle(difficulty):
         MinMax.enqueue(frontier.child_node(frontier, moves_open))
 
     # now to start the game
-    
+    print(moves_open)
+    while Game.goal_test(str(moves_open)) != True:
+        break
     
 EASY   = "testcaseEasy.txt"
 MEDIUM = "testcaseMed.txt"
