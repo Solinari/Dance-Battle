@@ -91,10 +91,10 @@ class Game:
         '''returns a state from self.actions(state)'''
         return state
 
-    def goal_test(self, state):
+    def return_goal(self):
         '''returns boolean of if state == goal'''
         print(self.goal)
-        return state == self.goal
+        return self.goal
 
     def path_cost(self, cost):
         '''defines current path cost'''
@@ -178,12 +178,16 @@ def My_Game_Data(difficulty):
 
 def make_goal(this_state):
     '''just set every tile to false and return it as the goal state'''
-  
-    for i in this_state:    
+
+    mylist = []
+    for i in this_state:
+        mylist.append(i)
+        
+    for i in mylist:    
         for j in range(len(i)):
             i[j] = False
 
-    return this_state
+    return mylist
     
 
 def Dance_Battle(difficulty):
@@ -205,21 +209,22 @@ def Dance_Battle(difficulty):
     # Max or min
     Max_or_min = ["Max", "Min"]
 
-    # don't need this anymore
-    game_data.pop(0)
-    game_data.pop(0)
+
 
     # remember saved states
     states = {}
 
     # Set up search queue & initial states
     MinMax = DFS()
-    check = moves_open[:]
-    print(check)
-    print(moves_open)
-    theGame = Game(check, make_goal(check))
-    begin = True
+    check = list(map(lambda x : x, moves_open))
     
+    theGame = Game(check, make_goal(check))
+
+    begin = True
+    curr_state = move_list(int(game_data[0]))
+    # don't need this anymore
+    game_data.pop(0)
+    game_data.pop(0)
     # set up intitial game state by spending out the given turns
     # we can still MiniMax these later using dfs..
     # use Node.depth() % 2 == 0 to see if max level
@@ -232,11 +237,11 @@ def Dance_Battle(difficulty):
         first_move  = int(moves[:1])
         second_move = int(moves[1:])
 
-        moves_open[first_move][second_move] = False
+        curr_state[first_move][second_move] = False
         
         if begin == True:
             # 1st move: Max
-            Root = Node(moves_open)
+            Root = Node(curr_state)
             MinMax.enqueue(Root)
             states[str(Root.state)] = Root.path_cost
             begin = False
@@ -247,18 +252,21 @@ def Dance_Battle(difficulty):
         # on the minimax...instructions are vague about this
         frontier = MinMax.peek()
         states[str(frontier.state)] = frontier.path_cost
-        MinMax.enqueue(frontier.child_node(frontier, moves_open))
+
+        MinMax.enqueue(frontier.child_node(frontier, curr_state))
 
     # now to start the game
-    print(moves_open)
-    print("I'm about to fail")
-    while Game.goal_test(moves_open) != True:
-        break
+
+    while moves_open2 != Game.return_goal:
+        
+        
+        
+        
     
 EASY   = "testcaseEasy.txt"
 MEDIUM = "testcaseMed.txt"
 HARD   = "testcaseHard.txt"
 
 Dance_Battle(EASY)
-Dance_Battle(MEDIUM)
-Dance_Battle(HARD)
+##Dance_Battle(MEDIUM)
+##Dance_Battle(HARD)
