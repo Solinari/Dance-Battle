@@ -188,6 +188,18 @@ def make_goal(this_state):
             i[j] = False
 
     return mylist
+
+def get_input(length):
+    '''get user input and returns as a string.
+       gets the length of the list for formatting purposes'''
+    
+    first = "Enter two digits 0 through "
+    last = "\nEnter them: a b\nThen press enter\n"
+    final = first + str(length) + last
+
+    inp = str(input(final))
+
+    return inp
     
 
 def Dance_Battle(difficulty):
@@ -196,6 +208,7 @@ def Dance_Battle(difficulty):
 
     # get my game data
     game_data = My_Game_Data(difficulty)
+    print(game_data)
 
     turn_count = 0
     list_len = int(game_data[0]) - 1
@@ -231,6 +244,8 @@ def Dance_Battle(difficulty):
         second_move = int(moves[1:])
 
         curr_state[first_move][second_move] = False
+        curr_state[second_move][first_move] = False
+        print(curr_state)
         
         if begin == True:
             # 1st move: Max
@@ -265,16 +280,19 @@ def Dance_Battle(difficulty):
         # take a player input
         if Max:
             print("beep")
-            inp = str(input("Enter two digits 0 through 9\nEnter them: a b\nThen press enter\n"))
+            inp = get_input(list_len)
             first_move  = int(inp[:1])
             second_move = int(inp[1:])
             print(first_move)
             print(second_move)
 
             while first_move > list_len and second_move > list_len:
-                inp = str(input("Enter two digits 0 through 9\nEnter them: a b\nThen press enter\n"))
+                inp = get_input()
+                first_move  = int(inp[:1])
+                second_move = int(inp[1:])
 
             curr_state[first_move][second_move] = False
+            curr_state[second_move][first_move] = False
             Max = False
         #Check  if Min
         if not Max:
@@ -291,5 +309,5 @@ MEDIUM = "testcaseMed.txt"
 HARD   = "testcaseHard.txt"
 
 Dance_Battle(EASY)
-##Dance_Battle(MEDIUM)
-##Dance_Battle(HARD)
+Dance_Battle(MEDIUM)
+Dance_Battle(HARD)
