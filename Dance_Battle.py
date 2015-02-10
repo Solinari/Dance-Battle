@@ -281,19 +281,27 @@ def Dance_Battle(difficulty):
         if Max:
             print("beep")
             inp = get_input(list_len)
+
+            # check to see if the input is good
+            while (int(inp[:1]) <= list_len) and (int(inp[1:]) <= list_len):
+                
+##            if not (int(inp[:1]) <= list_len):
+##                if not (int(inp[1:]) <= list_len):
+                print("zoop")
+                inp = get_input()
+                    
             first_move  = int(inp[:1])
             second_move = int(inp[1:])
             print(first_move)
             print(second_move)
 
-            while first_move > list_len and second_move > list_len:
-                inp = get_input()
-                first_move  = int(inp[:1])
-                second_move = int(inp[1:])
+
 
             curr_state[first_move][second_move] = False
             curr_state[second_move][first_move] = False
             Max = False
+            continue
+        
         #Check  if Min
         if not Max:
             print("boop")
@@ -309,5 +317,5 @@ MEDIUM = "testcaseMed.txt"
 HARD   = "testcaseHard.txt"
 
 Dance_Battle(EASY)
-Dance_Battle(MEDIUM)
-Dance_Battle(HARD)
+##Dance_Battle(MEDIUM)
+##Dance_Battle(HARD)
