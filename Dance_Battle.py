@@ -235,38 +235,41 @@ def Dance_Battle(difficulty):
     game_data.pop(0)
     game_data.pop(0)
 
-    while turn_count > 0:
+    # now to start the game
+    #
+    Max = True
+    
+    while curr_state != Game.return_goal:
 
         # bookkeeping
-        turn_count -= 1
-        moves = game_data.pop(0)
-        first_move  = int(moves[:1])
-        second_move = int(moves[1:])
 
-        curr_state[first_move][second_move] = False
-        curr_state[second_move][first_move] = False
-        print(curr_state)
-        
-        if begin == True:
-            # 1st move: Max
-            Root = Node(curr_state)
-            MinMax.enqueue(Root)
-            states[str(Root.state)] = Root.path_cost
-            begin = False
-            continue
+        if turn_count > 0:
+            turn_count -= 1
+            moves = game_data.pop(0)
+            first_move  = int(moves[:1])
+            second_move = int(moves[1:])
 
-        # future moves will be Min..then Max based on depth we check later
-        # I don't know if I'm suppose to check their states and append here
-        # on the minimax...instructions are vague about this
-        frontier = MinMax.peek()
-        states[str(frontier.state)] = frontier.path_cost
+            curr_state[first_move][second_move] = False
+            curr_state[second_move][first_move] = False
+            print(curr_state)
+            
+            if begin == True:
+                # 1st move: Max
+                Root = Node(curr_state)
+                MinMax.enqueue(Root)
+                states[str(Root.state)] = Root.path_cost
+                begin = False
+                continue
 
-        MinMax.enqueue(frontier.child_node(frontier, curr_state))
+            # future moves will be Min..then Max based on depth we check later
+            # I don't know if I'm suppose to check their states and append here
+            # on the minimax...instructions are vague about this
+            frontier = MinMax.peek()
+            states[str(frontier.state)] = frontier.path_cost
 
-    # now to start the game
-    Max = True
-    while curr_state != Game.return_goal:
-        
+            MinMax.enqueue(frontier.child_node(frontier, curr_state))
+
+        # after steps from the file have been enqueu'd
         curr_node = MinMax.dequeue()
         
         states[str(curr_node.state)] = curr_node.path_cost
@@ -275,36 +278,21 @@ def Dance_Battle(difficulty):
 
             return curr_node.state
 
+    
+    while curr_state != Game.return_goal:
+        
+        
+
         
         # Check if Max
-        # take a player input
         if Max:
-            print("beep")
-            inp = get_input(list_len)
 
-            # check to see if the input is good
-            while (int(inp[:1]) <= list_len) and (int(inp[1:]) <= list_len):
-                
-##            if not (int(inp[:1]) <= list_len):
-##                if not (int(inp[1:]) <= list_len):
-                print("zoop")
-                inp = get_input()
-                    
-            first_move  = int(inp[:1])
-            second_move = int(inp[1:])
-            print(first_move)
-            print(second_move)
-
-
-
-            curr_state[first_move][second_move] = False
-            curr_state[second_move][first_move] = False
             Max = False
             continue
         
         #Check  if Min
         if not Max:
-            print("boop")
+
             Max = True
             continue
         
