@@ -236,7 +236,7 @@ def Dance_Battle(difficulty):
     game_data.pop(0)
 
     # now to start the game
-    #
+    
     Max = True
     
     while curr_state != Game.return_goal:
