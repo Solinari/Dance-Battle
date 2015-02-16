@@ -242,7 +242,7 @@ def Dance_Battle(difficulty):
     while curr_state != Game.return_goal:
 
         # bookkeeping
-
+        # gotta read the moves in
         if turn_count > 0:
             turn_count -= 1
             moves = game_data.pop(0)
@@ -268,33 +268,38 @@ def Dance_Battle(difficulty):
             states[str(frontier.state)] = frontier.path_cost
 
             MinMax.enqueue(frontier.child_node(frontier, curr_state))
+            continue
+
+        #just testing new loop
+        if len(game_data) == 0:
+            break
 
         # after steps from the file have been enqueu'd
-        curr_node = MinMax.dequeue()
-        
-        states[str(curr_node.state)] = curr_node.path_cost
+##        curr_node = MinMax.dequeue()
+##        
+##        states[str(curr_node.state)] = curr_node.path_cost
 
-        if curr_node.state == Game.return_goal:
-
-            return curr_node.state
+##        if curr_node.state == Game.return_goal:
+##
+##            return curr_node.state
 
     
-    while curr_state != Game.return_goal:
-        
-        
-
-        
-        # Check if Max
-        if Max:
-
-            Max = False
-            continue
-        
-        #Check  if Min
-        if not Max:
-
-            Max = True
-            continue
+##    while curr_state != Game.return_goal:
+##        
+##        
+##
+##        
+##        # Check if Max
+##        if Max:
+##
+##            Max = False
+##            continue
+##        
+##        #Check  if Min
+##        if not Max:
+##
+##            Max = True
+##            continue
         
         
         
@@ -305,5 +310,5 @@ MEDIUM = "testcaseMed.txt"
 HARD   = "testcaseHard.txt"
 
 Dance_Battle(EASY)
-##Dance_Battle(MEDIUM)
-##Dance_Battle(HARD)
+Dance_Battle(MEDIUM)
+Dance_Battle(HARD)
