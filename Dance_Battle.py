@@ -63,14 +63,16 @@ class Node:
 
 class Game:
 
-    def __init__(self, initial = None, goal = None):
+    def __init__(self, initial = None, goal = None, player = None last = 0):
         '''stating state and remember to pass goal to problem'''
         self.initial = initial
         self.goal = goal
+        self.player = player
+        self.last = last
 
     # REWRITE ACTIONS FOR DANCE BATTLE
 
-    def actions(self, state):
+    def actions(self, state, player, last):
         '''return availible actions
         this is the real meat of defining the child nodes
         this will return a list of the child Nodes to result'''
@@ -80,6 +82,10 @@ class Game:
         # 99% of the work is done inside this method
         z = state
         child_actions = []
+
+        #if player = True it's Max and tries to find the index with the most number of True's
+        #if player = False it's Min and tries to find the index with the least number of True's
+        #if None, the game hasn't started yet
             
         return child_actions
 
@@ -200,6 +206,14 @@ def get_input(length):
     inp = str(input(final))
 
     return inp
+
+def make_state(state):
+    '''make an instance of the state
+       since in python 2d lists seem to pass as pointers'''
+    
+    my_state = list(map(lambda x : x, state))
+
+    return my_state
     
 
 def Dance_Battle(difficulty):
@@ -225,9 +239,11 @@ def Dance_Battle(difficulty):
 
     # Set up search queue & initial states
     MinMax = DFS()
-    check = list(map(lambda x : x, moves_open))
+    check = make_state(moves_open)
     
-    theGame = Game(check, make_goal(check))
+    Max = True
+    
+    theGame = Game(check, make_goal(check), Max)
 
     begin = True
     curr_state = move_list(int(game_data[0]))
@@ -237,7 +253,9 @@ def Dance_Battle(difficulty):
 
     # now to start the game
     
-    Max = True
+
+    # need this to remember the last move
+    last = 0
     
     while curr_state != Game.return_goal:
 
@@ -248,6 +266,7 @@ def Dance_Battle(difficulty):
             moves = game_data.pop(0)
             first_move  = int(moves[:1])
             second_move = int(moves[1:])
+            last = second_move
 
             curr_state[first_move][second_move] = False
             curr_state[second_move][first_move] = False
@@ -271,17 +290,20 @@ def Dance_Battle(difficulty):
             continue
 
         #just testing new loop
-        if len(game_data) == 0:
-            break
+##        if len(game_data) == 0:
+##            break
 
         # after steps from the file have been enqueu'd
-##        curr_node = MinMax.dequeue()
-##        
-##        states[str(curr_node.state)] = curr_node.path_cost
+        
+        curr_node = MinMax.dequeue()
 
-##        if curr_node.state == Game.return_goal:
-##
-##            return curr_node.state
+        children = theGame.actions(curr_node.state, Max, last)
+        
+        states[str(curr_node.state)] = curr_node.path_cost
+
+        if curr_node.state == Game.return_goal:
+
+            return curr_node.state
 
     
 ##    while curr_state != Game.return_goal:
