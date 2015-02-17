@@ -63,7 +63,7 @@ class Node:
 
 class Game:
 
-    def __init__(self, initial = None, goal = None, player = None last = 0):
+    def __init__(self, initial = None, goal = None, player = None, last = 0):
         '''stating state and remember to pass goal to problem'''
         self.initial = initial
         self.goal = goal
@@ -77,16 +77,23 @@ class Game:
         this is the real meat of defining the child nodes
         this will return a list of the child Nodes to result'''
 
-        
-        # Notice I am only going to read state, never alter state
-        # 99% of the work is done inside this method
-        z = state
-        child_actions = []
-
         #if player = True it's Max and tries to find the index with the most number of True's
         #if player = False it's Min and tries to find the index with the least number of True's
         #if None, the game hasn't started yet
-            
+
+        #this negate's max and appends the next player
+        next_player = not player
+        
+        #get a copy of our state to mess with without screwing with pointers
+        z = make_state(state)
+
+        #remember to pop max off
+        child_actions = []
+
+        child_actions.append(next_player)
+
+        #check to see if current 
+        
         return child_actions
 
     def action_result(self, action):
@@ -297,15 +304,23 @@ def Dance_Battle(difficulty):
         
         curr_node = MinMax.dequeue()
 
-        children = theGame.actions(curr_node.state, Max, last)
-        
         states[str(curr_node.state)] = curr_node.path_cost
+
+        children = theGame.actions(curr_node.state, Max, last)
+
+        #max is gonna be at the front. so pop him and it'l be the
+        #negation of what it was
+        Max = children.pop(0)
+        for child in children:
+            pass
+
+##            if str
 
         if curr_node.state == Game.return_goal:
 
             return curr_node.state
 
-    
+
 ##    while curr_state != Game.return_goal:
 ##        
 ##        
