@@ -98,6 +98,7 @@ class Game:
         #checks if True, then sets to False for both combos
         #appends that state to child_actions
         #then sets them back. for the next iteration
+        #but it's broken
         for i in range(len(z)):
             for j in range(i):
                 if z[i][j] == True:
@@ -365,5 +366,5 @@ MEDIUM = "testcaseMed.txt"
 HARD   = "testcaseHard.txt"
 
 Dance_Battle(EASY)
-#Dance_Battle(MEDIUM)
+Dance_Battle(MEDIUM)
 Dance_Battle(HARD)
