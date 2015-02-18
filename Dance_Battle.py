@@ -86,13 +86,32 @@ class Game:
         
         #get a copy of our state to mess with without screwing with pointers
         z = make_state(state)
+        print("here is z")
+        print(z)
 
-        #remember to pop max off
         child_actions = []
 
+        #append what the next player is to the fonr
         child_actions.append(next_player)
 
-        #check to see if current 
+        #this iterates over all the combinations
+        #checks if True, then sets to False for both combos
+        #appends that state to child_actions
+        #then sets them back. for the next iteration
+        for i in range(len(z)):
+            for j in range(i):
+                if z[i][j] == True:
+                    if z[j][i] == True:
+                        z[i][j] = False
+                        z[j][i] = False
+                        child_actions.append(z)
+                        z[i][j] = True
+                        z[j][i] = True
+
+        print("here is child actions")
+        print(child_actions)
+        print("here is z")
+        print(z)
         
         return child_actions
 
@@ -313,8 +332,7 @@ def Dance_Battle(difficulty):
         Max = children.pop(0)
         for child in children:
             pass
-
-##            if str
+            
 
         if curr_node.state == Game.return_goal:
 
@@ -347,5 +365,5 @@ MEDIUM = "testcaseMed.txt"
 HARD   = "testcaseHard.txt"
 
 Dance_Battle(EASY)
-Dance_Battle(MEDIUM)
+#Dance_Battle(MEDIUM)
 Dance_Battle(HARD)
